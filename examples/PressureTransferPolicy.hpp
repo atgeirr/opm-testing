@@ -1,11 +1,9 @@
 #ifndef OPM_PRESSURE_TRANSFER_POLICY_HEADER_INCLUDED
 #define OPM_PRESSURE_TRANSFER_POLICY_HEADER_INCLUDED
 
-#include <opm/autodiff/twolevelmethodcpr.hh>
-#include <opm/autodiff/ParallelOverlappingILU0.hpp>
-//#include <opm/autodiff/FlowLinearSolverParameters.hpp>
-//#include <opm/autodiff/CPRPreconditioner.hpp>
-#include <opm/autodiff/amgcpr.hh>
+#include <opm/simulators/linalg/twolevelmethodcpr.hh>
+#include <opm/simulators/linalg/ParallelOverlappingILU0.hpp>
+#include <opm/simulators/linalg/amgcpr.hh>
 #include <dune/istl/paamg/twolevelmethod.hh>
 #include <dune/istl/paamg/aggregates.hh>
 #include <dune/istl/bvector.hh>
@@ -64,7 +62,7 @@ namespace Opm
 		assert( col.index() == coarseCol.index() );
 		double matrix_el = 0;
 		auto bw = weights_[row.index()];
-		for(int i = 0; i < bw.size(); ++i ){
+		for(size_t i = 0; i < bw.size(); ++i ){
 		  matrix_el += (*col)[i][VARIABLE_INDEX]*bw[i];
 		}
 		*coarseCol = matrix_el;
@@ -96,7 +94,7 @@ namespace Opm
       	      {
 		double matrix_el = 0;
 		auto bw = weights_[i];
-		for(int ii = 0; ii < bw.size(); ++ii ){
+		for(size_t ii = 0; ii < bw.size(); ++ii ){
 		  matrix_el += (*entry)[ii][VARIABLE_INDEX]*bw[ii];
 		}		
       		const auto& j = entry.index();
@@ -117,7 +115,7 @@ namespace Opm
 	  {
 	    auto bw = weights_[block.index()];
 	    double rhs_el = 0.0;
-	    for(int i = 0; i < block->size(); ++i ){
+	    for(size_t i = 0; i < block->size(); ++i ){
 	      rhs_el += (*block)[i]*bw[i];
 	    }
 	    this->rhs_[block-begin] = rhs_el;

@@ -25,7 +25,7 @@
 #include "PressureTransferPolicy.hpp"
 #include "PressureSolverPolicy.hpp"
 #include "GetQuasiImpesWeights.hpp"
-#include <opm/autodiff/twolevelmethodcpr.hh>
+#include <opm/simulators/linalg/twolevelmethodcpr.hh>
 namespace Opm
 {
   //=====================================================================
@@ -85,7 +85,7 @@ namespace Opm
     /// Construct a system solver.
     /// \param[in] parallelInformation In the case of a parallel run
     ///                                with dune-istl the information about the parallelization.
-    ISTLCprSolverST(pt::ptree prm)
+    explicit ISTLCprSolverST(pt::ptree prm)
       : prm_(prm),
 	iterations_( 0 ),
 	converged_(false),
@@ -105,7 +105,6 @@ namespace Opm
     }
 
     void prepare(const MatrixType& M, VectorType& b,bool update_preconditioner = true){  
-      int newton_iteration = 1;//this->simulator_.model().newtonMethod().numIterations();	  
 #if HAVE_MPI			      	  
       if( this->isParallel() )
 	{
@@ -224,9 +223,6 @@ namespace Opm
 				   FineSmootherType>;
 
       
-    mutable int iterations_;
-    mutable bool converged_;
-        
       
     std::unique_ptr<LevelTransferPolicy> levelTransferPolicy_;
     std::unique_ptr<CoarseSolverPolicy> coarseSolverPolicy_;
@@ -237,6 +233,9 @@ namespace Opm
     VectorType* rhs_;
     VectorType weights_;
     pt::ptree prm_;
+    mutable int iterations_;
+    mutable bool converged_;
+
     typedef typename Dune::Amg::SmootherTraits<CoarseSmootherType>::Arguments  SmootherArgs;
       
     Communication comm_;

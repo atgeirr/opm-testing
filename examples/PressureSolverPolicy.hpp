@@ -11,7 +11,7 @@
 #include <dune/common/fvector.hh>
 #include <dune/common/fmatrix.hh>
 #include <dune/common/version.hh>
-#include <opm/autodiff/amgcpr.hh>
+#include <opm/simulators/linalg/amgcpr.hh>
 #include <boost/property_tree/ptree.hpp>        // pt::ptree
 //#include <boost/property_tree/ini_parser.hpp> 
 #include <boost/property_tree/ptree.hpp>
@@ -67,7 +67,7 @@ namespace Opm{
                            const Criterion& crit,
                            const typename AMGType::SmootherArgs& args,
                            const Communication& comm,const pt::ptree& prm)
-	  :  amg_(),crit_(crit), op_(op),args_(args), comm_(comm),prm_(prm)
+            :  op_(op), crit_(crit), args_(args), comm_(comm), prm_(prm), amg_()
         {
 	  amg_.reset(new AMGType(op, crit, args, comm));
         }
@@ -84,7 +84,7 @@ namespace Opm{
 #endif
 	
 
-        void apply(X& x, X& b, double reduction, Dune::InverseOperatorResult& res)
+        void apply(X& x, X& b, double reduction, Dune::InverseOperatorResult& res) override
         {
 	  DUNE_UNUSED_PARAMETER(reduction);
 	  DUNE_UNUSED_PARAMETER(res);
@@ -149,7 +149,7 @@ namespace Opm{
 #endif
         }
 
-        void apply(X& x, X& b, Dune::InverseOperatorResult& res)
+        void apply(X& x, X& b, Dune::InverseOperatorResult& res) override
         {
 	  return apply(x,b,1e-8,res);
         }
@@ -161,14 +161,14 @@ namespace Opm{
         {
         }
       private:
-        X x_;
-        std::unique_ptr<AMGType> amg_;
 	//std::unique_ptr<typename AMGType::Operator> op_;
 	typename AMGType::Operator& op_;
 	Criterion crit_;
 	typename AMGType::SmootherArgs args_;
         const Communication& comm_;
 	pt::ptree prm_;
+        std::unique_ptr<AMGType> amg_;
+        X x_;
       };
     public:
       /** @brief The type of solver constructed for the coarse level. */

@@ -82,11 +82,8 @@
 template <class Scalar>
 inline void testAll(const Opm::Deck& deck,const Opm::EclipseState& eclState,bool output_all = false)
 {
-    static const Scalar tolerance = std::numeric_limits<Scalar>::epsilon()*1e3;
-
-
     const auto& pvtwKeyword = deck.getKeyword("PVTW");
-    size_t numPvtRegions = pvtwKeyword.size();
+    int numPvtRegions = pvtwKeyword.size();
 
     std::cout << "Number of pvt regions " << numPvtRegions << std::endl;
 
@@ -111,7 +108,7 @@ inline void testAll(const Opm::Deck& deck,const Opm::EclipseState& eclState,bool
     for (int regionIdx = 0; regionIdx < numPvtRegions; ++regionIdx){
         std::cout << " ********************************************** " << std::endl;
         std::cout << " Testing pvt region " << regionIdx << std::endl;
-        for (unsigned i = 0; i < steps; ++i) {        
+        for (int i = 0; i < steps; ++i) {
             Scalar p = Scalar(i)/steps*115e5 + 100e5;
             Scalar T = 273.0;
             if(output_all){
@@ -224,12 +221,11 @@ int main(int argc, char **argv)
     Opm::ParseContext parseContext(tmp);
     Opm::ErrorGuard errorGuard;
     
-    Opm::Deck deck = parser.parseFile(deckFilename , parseContext, errorGuard);
-    Opm::checkDeck(deck, parser);
+    Opm::Deck deck = parser.parseFile(deckFilename, parseContext, errorGuard);
+    Opm::checkDeck(deck, parser, parseContext, errorGuard);
     Opm::MissingFeatures::checkKeywords(deck);
     
     Opm::Runspec runspec( deck );
-    const auto& phases = runspec.phases();
 
     Opm::EclipseState eclipseState( deck);
 
