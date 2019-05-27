@@ -98,4 +98,67 @@ endmacro (tests_hook)
 include (OpmLibMain)
 
 
+# opm_add_test(flow_simple
+#   ONLY_COMPILE
+#   ALWAYS_ENABLE
+#   DEPENDS "opmsimulators"
+#   LIBRARIES "opmsimulators"
+#   SOURCES
+#     examples/flow_simple.cpp)
+
+opm_add_test(fluid_test
+  ONLY_COMPILE
+  ALWAYS_ENABLE
+  DEPENDS "opmsimulators"
+  LIBRARIES "opmsimulators"
+  SOURCES
+    examples/fluid_test)	
+
+opm_add_test(flow_blackoil_cpr_tester
+  ONLY_COMPILE
+  ALWAYS_ENABLE
+  DEPENDS "opmsimulators"
+  LIBRARIES "opmsimulators"
+  SOURCES
+    examples/flow_blackoil_cpr_tester.cpp)	
+
+
+opm_add_test(flow_onephase
+  ONLY_COMPILE
+  ALWAYS_ENABLE
+  DEPENDS "opmsimulators"
+  LIBRARIES "opmsimulators"
+  SOURCES
+  examples/flow_onephase.cpp)	
+	
+
+opm_add_test(linearsolver_test
+  ONLY_COMPILE
+  ALWAYS_ENABLE
+  DEPENDS "opmsimulators"
+  LIBRARIES "opmsimulators"
+  SOURCES
+    examples/linearsolver_test.cpp)	
+
+opm_add_test(linearsolver_test_mpi
+  ONLY_COMPILE
+  ALWAYS_ENABLE
+  DEPENDS "opmsimulators"
+  LIBRARIES "opmsimulators"
+  SOURCES
+    examples/linearsolver_test_mpi.cpp)	
+
+	
+target_link_libraries(linearsolver_test boost_program_options)
+target_link_libraries(linearsolver_test_mpi boost_program_options boost_serialization boost_mpi)		
+#install(TARGETS flow_simple DESTINATION bin)
+install(TARGETS fluid_test DESTINATION bin)
+install(TARGETS linearsolver_test DESTINATION bin)
+install(TARGETS linearsolver_test_mpi DESTINATION bin)
+install(TARGETS flow_blackoil_cpr_tester DESTINATION bin)
+
+	
+
+#include(OpmBashCompletion)
+#opm_add_bash_completion(flow_simple)
 

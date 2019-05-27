@@ -58,17 +58,23 @@ list (APPEND MAIN_SOURCE_FILES
 # originally generated with the command:
 # find tutorials examples -name '*.c*' -printf '\t%p\n' | sort
 list (APPEND EXAMPLE_SOURCE_FILES
-     examples/flow_test.cpp
-     examples/flow_test2.cpp
-     examples/flow_test_2ph.cpp
+#     examples/flow_test.cpp
+#     examples/flow_test2.cpp
+#     examples/flow_test_2ph.cpp
 	)
 list (APPEND  PROGRAM_SOURCE_FILES
-     examples/flow_test.cpp
-     examples/flow_test2.cpp
-     examples/flow_test_2ph.cpp
+ #    examples/flow_test.cpp
+ #    examples/flow_test2.cpp
+ #    examples/flow_test_2ph.cpp
     )
 # originally generated with the command:
 # find opm -name '*.h*' -a ! -name '*-pch.hpp' -printf '\t%p\n' | sort
 list (APPEND PUBLIC_HEADER_FILES
-    #eclproblemsimple.hh
+  #eclproblemsimple.hh
+	opm/testing/PressureSolverPolicy.hpp
+	opm/testing/PressureTransferPolicy.hpp
+	opm/testing/ISTLCPRSolver.hpp
+	opm/testing/GetQuasiImpesWeights.hpp
+	opm/testing/ISTLCPRSolverST.hpp
+	opm/testing/ISTLCPRSolverSTPar.hpp
   )

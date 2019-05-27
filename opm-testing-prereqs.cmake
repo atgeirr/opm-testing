@@ -22,7 +22,7 @@ set (opm-testing_DEPS
   "CXX11Features"
   # Various runtime library enhancements
   "Boost 1.44.0
-    COMPONENTS date_time filesystem system unit_test_framework REQUIRED"
+    COMPONENTS serialization program_options date_time filesystem system unit_test_framework REQUIRED"
   # DUNE prerequisites
   "dune-common REQUIRED"
   "dune-istl REQUIRED"
@@ -44,7 +44,7 @@ set (opm-testing_DEPS
   "ewoms REQUIRED"
   "opm-simulators REQUIRED"
   # Eigen
-  "Eigen3 3.2.0"
+  #"Eigen3 3.2.0"
   "amgcl REQUIRED"
   )
 
